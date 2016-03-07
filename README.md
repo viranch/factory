@@ -28,10 +28,10 @@ from factory import Factory
 class FancyThing:
     def __init__(self):
         self.x = 12
-    
+
     def fancy_work(self, fanciness):
         return fanciness*(fanciness+self.x)
-        
+
     def mass_fancy(self, swag=10):
         f = Factory(worker=self.fancy_work, num_workers=swag/2)
         return f.work(range(swag*2))
