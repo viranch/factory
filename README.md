@@ -39,6 +39,28 @@ class FancyThing:
 print FancyThing().mass_fancy()
 ```
 
+Factory can also work for you asynchronously:
+
+```python
+from factory import Factory
+
+def myworker(x):
+    return x*x*x
+
+source = range(1,51)
+f = Factory(worker=myworker, num_workers=5)
+
+for cube in f.work_async(source):
+    # print as and when results become available
+    print cube
+
+    # optionally break on a condition without having to wait for all workers to finish
+    if cube > 3000:
+        break
+
+f.close() # it is important to close after async work to prevent zombie threads
+```
+
 ### But `multiprocessing.Pool` does this
 
 It doesn't. For some reason `multiprocessing.Pool` requires the worker function to be [picklable](http://stackoverflow.com/questions/1816958/), [which is not always the case](https://docs.python.org/2/library/pickle.html#what-can-be-pickled-and-unpickled) for things like the second example above.
